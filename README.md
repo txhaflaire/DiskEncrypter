@@ -77,5 +77,7 @@ On detection of a new volume being mounted in `Volumes` the `LaunchDaemon` trigg
 <img src="./Images/DiskEncrypter_2.png" alt="swiftDialog" width="500"/>
 <img src="./Images/DiskEncrypter_3.png" alt="swiftDialog" width="500"/><br/>
 
+<img src="./Images/jamfpro_custom_apps_and_settings.png" alt="Jamf Pro Custom Application & Settings" width="500"/><br/>
+
 #
 #### Please note that all resources contained within this repository are provided as-is and are not officially supported.
