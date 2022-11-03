@@ -17,7 +17,7 @@ The workflows relies on swiftDialog, the preference is that it is already pre-in
 Steps to create the workflow:
 
 - [ ] Jamf Pro / MDM - Distribute [swiftDialog](https://github.com/bartreardon/swiftDialog/releases) to the macOS endpoints
-- [ ] Jamf Pro / MDM - Configure and distrbute the [`JSON`](./com.custom.diskencrypter.json) schema for the Managed Preferences `com.custom.diskencrypter`
+- [ ] Jamf Pro / MDM - Upload and configure the [`JSON`](./com.custom.diskencrypter.json) schema for the Managed Preferences `com.custom.diskencrypter` in to [Jamf Pro Configuration Profiles Custon Applications & Settings](https://docs.jamf.com/technical-papers/jamf-pro/json-schema/10.26.0/JSON_Schema_Manifest_Structure.html)
 - [ ] Jamf Pro / MDM - Distribute the DiskEncrypter.pkg contained in Releases
     - This distributes the script, the LaunchDaemon and loads it as well.
 
