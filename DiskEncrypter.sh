@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Created by Thijs Xhaflaire, Jamf on 01/10/2022
+# Created by Thijs Xhaflaire, on 01/10/2022
 # Modified on 28/10/2022
 
 ## Managed Preferences
