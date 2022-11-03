@@ -1,0 +1,330 @@
+{
+	"title": "com.custom.diskencrypter",
+	"description": "",
+	"properties": {
+        "mainButtonLabelConversion": {
+            "title": "Conversion Button Text",
+            "description": "Configures a custom text value for the main button in the password dialog popup where the storage type volume is HFS and we need to convert the volume. (Default Convert)",
+            "property_order": 5,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "title": {
+            "title": "Title",
+            "description": "Configures a custom Title for the dialog popup",
+            "property_order": 10,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "subTitleEXFAT": {
+            "title": "Erase EXFAT Volume Text",
+            "description": "Configures a custom text value for the dialog that notifies the user that the removable disk is not encrypted and the storage type is Microsoft Visual Data, in order to encrypt it we need to erase the disk and we lose all existing content.",
+            "property_order": 15,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "notifyUser": {
+            "title": "Generate end-user notifications",
+            "description": "Configures if we want to notify the user. default is true",
+            "property_order": 20,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string",
+                    "options": {
+                        "enum_titles": ["yes", "no"]
+                    },
+                    "enum": ["yes", "no"]
+                }
+            ]
+        },
+        "placeholderPassword": {
+            "title": "Password Placeholder Text",
+            "description": "Configures a custom password placeholder for the dialog popup",
+            "property_order": 25,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "subTitleProgress": {
+            "title": "Progress Bar Text",
+            "description": "Configures a custom text value for the Disk encryption Progress in the dialog popup",
+            "property_order": 30,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "secondaryButtonLabelHint": {
+            "title": "Hint Secondary Button Text",
+            "description": "Configures a custom text value for the secondary button in the hint dialog popup",
+            "property_order": 35,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "subTitlePassword": {
+            "title": "Password Description Text",
+            "description": "Configures a custom text value for the dialog that notifies the user that the removable disk is not encrypted.",
+            "property_order": 40,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "iconPath": {
+            "title": "Icon Path",
+            "description": "Configures a custom icon path for within the dialog pop-ups. (default uses FileVault icon)",
+            "property_order": 45,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "notificationApp": {
+            "title": "swiftDialog Path",
+            "description": "Sets a custom path of the binary. default is /usr/local/bin/dialog",
+            "property_order": 50,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "subTitleHint": {
+            "title": "Second Hint Text",
+            "description": "Configures a custom text value for the Hint in the dialog popup",
+            "property_order": 55,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "notifyUserHint": {
+            "title": "Allow Hint",
+            "description": "Allows and generates a additional alert to provide the end-user a option to set a password hint. default is true",
+            "property_order": 60,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string",
+                    "options": {
+                        "enum_titles": ["yes", "no"]
+                    },
+                    "enum": ["yes", "no"]
+                }
+            ]
+        },
+        "passwordRegex": {
+            "title": "Password Requirements REGEX",
+            "description": "Configure this if the password does needs to meet a pattern. Set a valid REGEX string. (default requires 4 characters)",
+            "property_order": 65,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "passwordRegexErrorMessage": {
+            "title": "Password Requirement Message",
+            "description": "Specify the message that a end-user gets when the provided password does not match the requirements",
+            "property_order": 70,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "downloadSwiftDialog": {
+            "title": "Download swiftDialog",
+            "description": "Configures if swiftDialog needs to be downloaded if not present on endpoint. default is true",
+            "property_order": 75,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string",
+                    "options": {
+                        "enum_titles": ["yes", "no"]
+                    },
+                    "enum": ["yes", "no"]
+                }
+            ]
+        },
+        "mainButtonLabelEXFAT": {
+            "title": "Erase Button Text",
+            "description": "Configures a custom text value for the main button in the password dialog popup where the storage type volume is Microsoft Visual Data and we need to erase the volume. (Default Erase existing data and encrypt)",
+            "property_order": 80,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "hintRegexErrorMessage": {
+            "title": "Hint Requirements Message",
+            "description": "Specify a custom message that a end-user gets when the provided hint does not match the requirements",
+            "property_order": 85,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "mainButtonLabelProgress": {
+            "title": "Exit Button Text",
+            "description": "Configures a custom text value for the exit button in the dialog popup",
+            "property_order": 90,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "mainButtonLabelHint": {
+            "title": "Hint Main Button Text",
+            "description": "Configures a custom text value for the main button in the hint dialog popup",
+            "property_order": 95,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "hintRegex": {
+            "title": "Hint Requirements REGEX",
+            "description": "Configure this if the hint does needs to meet a pattern. Set a valid REGEX string. (default requires 6 characters if hint set)",
+            "property_order": 100,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "secondTitlePassword": {
+            "title": "Password Text",
+            "description": "Configures a custom text value for the password in the dialog popup",
+            "property_order": 105,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "exitButtonLabel": {
+            "title": "Exit Button Text",
+            "description": "Configures a custom text value for the exit button. default is cancel",
+            "property_order": 110,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "secondaryButtonLabelPassword": {
+            "title": "Password Secondary Button Text",
+            "description": "Configures a custom text value for the secondary button in the password dialog popup",
+            "property_order": 115,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "mainButtonLabelPassword": {
+            "title": "Password Main Button Text",
+            "description": "Configures a custom text value for the main button in the password dialog popup (Default Continue)",
+            "property_order": 120,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "subTitleConversion": {
+            "title": "Conversion Dialog Text",
+            "description": "Configures a custom text value for the dialog that notifies the user that the removable disk is not encrypted and we need to convert it to APFS in order to encrypt it.",
+            "property_order": 125,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "titleProgress": {
+            "title": "Title Progress Bar",
+            "description": "Configures a custom Title for the Progress Bar dialog popup",
+            "property_order": 130,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        }
+	}
+}
