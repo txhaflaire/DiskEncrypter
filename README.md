@@ -4,7 +4,9 @@ This repository provides a `LaunchDaemon` based workflow using `WatchPaths` moni
 
 This workflow could help any organisation by preventing loss of corporate data on to unencrypted removable storage devices and provide guided end-users workflows to have the storage devices encrypted in an automated fashion.
 
-Please read through and test this script intensively prior adding it to your production environment, as in some cases the end-user agree's to erase the external disk and losing it's contents stored on it. 
+Please read through and test this script intensively prior adding it to your production environment, as in some cases the end-user agree's to erase the external disk and losing it's contents stored on it.
+
+This workflow has been tested against macOS Monterey.
 
 ## Dependencies
 The workflows relies on swiftDialog, the preference is that it is already pre-installed but within the script we do provide checks to download and install it if it's not existing on the endpoint.
