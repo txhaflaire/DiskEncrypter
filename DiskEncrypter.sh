@@ -120,14 +120,28 @@ readSettingsFile
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
-	
+					
 					echo "swiftDialog not installed, downloading and installing"
 					
+					expectedDialogTeamID="PWA5E9TQ59"
 					LOCATION=$(/usr/bin/curl -s https://api.github.com/repos/bartreardon/swiftDialog/releases/latest | grep browser_download_url | grep .pkg | grep -v debug | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g')
 					/usr/bin/curl -L $LOCATION -o /tmp/swiftDialog.pkg
-					/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
+					
+					# Verify the download
+					teamID=$(/usr/sbin/spctl -a -vv -t install "/tmp/swiftDialog.pkg" 2>&1 | awk '/origin=/ {print $NF }' | tr -d '()')
+					
+					# Install the package if Team ID validates
+					if [ "$expectedDialogTeamID" = "$teamID" ] || [ "$expectedDialogTeamID" = "" ]; then
+						echo "swiftDialog Team ID verification succeeded"
+						/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
+					else
+						echo "swiftDialog Team ID verification failed."
+						exit 1
+					fi
+					
+					# Cleaning up the swiftDialog.pkg
 					/bin/rm /tmp/swiftDialog.pkg
-	
+					
 				fi
 				
 				## Generate notification and ask for password for encryption or mount volume as read-only
@@ -193,14 +207,28 @@ readSettingsFile
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
-	
+					
 					echo "swiftDialog not installed, downloading and installing"
 					
+					expectedDialogTeamID="PWA5E9TQ59"
 					LOCATION=$(/usr/bin/curl -s https://api.github.com/repos/bartreardon/swiftDialog/releases/latest | grep browser_download_url | grep .pkg | grep -v debug | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g')
 					/usr/bin/curl -L $LOCATION -o /tmp/swiftDialog.pkg
-					/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
+					
+					# Verify the download
+					teamID=$(/usr/sbin/spctl -a -vv -t install "/tmp/swiftDialog.pkg" 2>&1 | awk '/origin=/ {print $NF }' | tr -d '()')
+					
+					# Install the package if Team ID validates
+					if [ "$expectedDialogTeamID" = "$teamID" ] || [ "$expectedDialogTeamID" = "" ]; then
+						echo "swiftDialog Team ID verification succeeded"
+						/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
+					else
+						echo "swiftDialog Team ID verification failed."
+						exit 1
+					fi
+					
+					# Cleaning up the swiftDialog.pkg
 					/bin/rm /tmp/swiftDialog.pkg
-	
+					
 				fi
 
 				## Generate notification and ask for password for encryption or mount volume as read-only
@@ -269,14 +297,28 @@ readSettingsFile
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
-	
+					
 					echo "swiftDialog not installed, downloading and installing"
 					
+					expectedDialogTeamID="PWA5E9TQ59"
 					LOCATION=$(/usr/bin/curl -s https://api.github.com/repos/bartreardon/swiftDialog/releases/latest | grep browser_download_url | grep .pkg | grep -v debug | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g')
 					/usr/bin/curl -L $LOCATION -o /tmp/swiftDialog.pkg
-					/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
+					
+					# Verify the download
+					teamID=$(/usr/sbin/spctl -a -vv -t install "/tmp/swiftDialog.pkg" 2>&1 | awk '/origin=/ {print $NF }' | tr -d '()')
+					
+					# Install the package if Team ID validates
+					if [ "$expectedDialogTeamID" = "$teamID" ] || [ "$expectedDialogTeamID" = "" ]; then
+						echo "swiftDialog Team ID verification succeeded"
+						/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
+					else
+						echo "swiftDialog Team ID verification failed."
+						exit 1
+					fi
+					
+					# Cleaning up the swiftDialog.pkg
 					/bin/rm /tmp/swiftDialog.pkg
-	
+					
 				fi
 
 				## Generate notification and ask for password for encryption or mount volume as read-only
