@@ -63,6 +63,12 @@ On detection of a new volume being mounted in `Volumes` the `LaunchDaemon` trigg
 	- In case of Microsoft Basic Data (NTFS) we warn the user that we need to **erase** the disk and change the storage type to APFS and we are **losing existing content of the disk**
 		- to do on this workflow is archive existing content if it does exist on the volume, erase, convert and encrypt the disk and restore existing content
 
+###  <a id="logging"></a>Logging
+
+DiskEncrypter writes to the macOS Unified Log, use the following command to filter the Unified Logs.
+
+```log show --predicate 'process == "logger" AND eventMessage contains "DiskEncrypter:"'```
+
 ### Optional Workflow Components
 
 #### Jamf Protect
