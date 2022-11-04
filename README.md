@@ -1,6 +1,6 @@
 # Disk Encrypter - Encrypt unencrypted removable storage devices
 
-This repository provides a `LaunchDaemon` based workflow using `WatchPaths` monitoring new `Volumes` being mounted on the macOS endpoint, once a new volume mount has been detected by the `LaunchDaemon` it triggers the `DiskEncrypter.sh` script to provide a end-user driven workflow to have the removable media devices encrypted or automatically mounted as `read-only`.
+This repository provides a `LaunchDaemon` based workflow using `StartOnMount` monitoring new `Volumes` being mounted on the macOS endpoint, once a new volume mount has been detected by the `LaunchDaemon` it triggers the `DiskEncrypter.sh` script to provide a end-user driven workflow to have the removable media devices encrypted or automatically mounted as `read-only`.
 
 This workflow could help any organisation by preventing loss of corporate data on to unencrypted removable storage devices and provide guided end-users workflows to have the storage devices encrypted in an automated fashion.
 
@@ -42,12 +42,11 @@ by installing the provided package in this repository we are distributing the `c
 		<string>/bin/sh</string>
 		<string>/Library/Application Support/Custom/DiskEncrypter.sh</string>
 	</array>
-	<key>WatchPaths</key>
-	<array>
-		<string>/Volumes/</string>
-	</array>
+	<key>StartOnMount</key>
+	<true/>
 </dict>
 </plist>
+
 ```
 
 ###  <a id="script"></a>Script

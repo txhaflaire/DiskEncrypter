@@ -138,10 +138,22 @@
                 }
             ]
         },
+        "batteryExitMainButton": {
+            "title": "Exit Button Battery",
+            "description": "Configure the exit button text once the Mac is not on AC power. default is Exit",
+            "property_order": 60,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
         "notifyUserHint": {
             "title": "Allow Hint",
             "description": "Allows and generates a additional alert to provide the end-user a option to set a password hint. default is true",
-            "property_order": 60,
+            "property_order": 65,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -154,10 +166,22 @@
                 }
             ]
         },
+        "subTitleBattery": {
+            "title": "Battery Dialog Text",
+            "description": "Configures a custom text value when the Mac is not connected to AC power and not able to encrypt removable devices.",
+            "property_order": 70,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
         "passwordRegex": {
             "title": "Password Requirements REGEX",
             "description": "Configure this if the password does needs to meet a pattern. Set a valid REGEX string. (default requires 4 characters)",
-            "property_order": 65,
+            "property_order": 75,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -169,7 +193,7 @@
         "passwordRegexErrorMessage": {
             "title": "Password Requirement Message",
             "description": "Specify the message that a end-user gets when the provided password does not match the requirements",
-            "property_order": 70,
+            "property_order": 80,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -181,7 +205,7 @@
         "downloadSwiftDialog": {
             "title": "Download swiftDialog",
             "description": "Configures if swiftDialog needs to be downloaded if not present on endpoint. default is true",
-            "property_order": 75,
+            "property_order": 85,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -197,7 +221,7 @@
         "mainButtonLabelEXFAT": {
             "title": "Erase Button Text",
             "description": "Configures a custom text value for the main button in the password dialog popup where the storage type volume is Microsoft Visual Data and we need to erase the volume. (Default Erase existing data and encrypt)",
-            "property_order": 80,
+            "property_order": 90,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -209,7 +233,7 @@
         "hintRegexErrorMessage": {
             "title": "Hint Requirements Message",
             "description": "Specify a custom message that a end-user gets when the provided hint does not match the requirements",
-            "property_order": 85,
+            "property_order": 95,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -221,7 +245,7 @@
         "mainButtonLabelProgress": {
             "title": "Exit Button Text",
             "description": "Configures a custom text value for the exit button in the dialog popup",
-            "property_order": 90,
+            "property_order": 100,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -233,7 +257,7 @@
         "mainButtonLabelHint": {
             "title": "Hint Main Button Text",
             "description": "Configures a custom text value for the main button in the hint dialog popup",
-            "property_order": 95,
+            "property_order": 105,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -245,7 +269,7 @@
         "hintRegex": {
             "title": "Hint Requirements REGEX",
             "description": "Configure this if the hint does needs to meet a pattern. Set a valid REGEX string. (default requires 6 characters if hint set)",
-            "property_order": 100,
+            "property_order": 110,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -257,7 +281,7 @@
         "secondTitlePassword": {
             "title": "Password Text",
             "description": "Configures a custom text value for the password in the dialog popup",
-            "property_order": 105,
+            "property_order": 115,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -269,7 +293,19 @@
         "exitButtonLabel": {
             "title": "Exit Button Text",
             "description": "Configures a custom text value for the exit button. default is cancel",
-            "property_order": 110,
+            "property_order": 120,
+            "anyOf": [
+                {"type": "null", "title": "Not Configured"},
+                {
+                    "title": "Configured",
+                    "type": "string"
+                }
+            ]
+        },
+        "batteryIconPath": {
+            "title": "Battery Icon Path",
+            "description": "Configures a custom icon path for the dialog warning the user that the Mac is not on AC power. (default uses Stop icon)",
+            "property_order": 125,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -281,7 +317,7 @@
         "secondaryButtonLabelPassword": {
             "title": "Password Secondary Button Text",
             "description": "Configures a custom text value for the secondary button in the password dialog popup",
-            "property_order": 115,
+            "property_order": 130,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -293,7 +329,7 @@
         "mainButtonLabelPassword": {
             "title": "Password Main Button Text",
             "description": "Configures a custom text value for the main button in the password dialog popup (Default Continue)",
-            "property_order": 120,
+            "property_order": 135,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -305,7 +341,7 @@
         "subTitleConversion": {
             "title": "Conversion Dialog Text",
             "description": "Configures a custom text value for the dialog that notifies the user that the removable disk is not encrypted and we need to convert it to APFS in order to encrypt it.",
-            "property_order": 125,
+            "property_order": 140,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {
@@ -317,7 +353,7 @@
         "titleProgress": {
             "title": "Title Progress Bar",
             "description": "Configures a custom Title for the Progress Bar dialog popup",
-            "property_order": 130,
+            "property_order": 145,
             "anyOf": [
                 {"type": "null", "title": "Not Configured"},
                 {

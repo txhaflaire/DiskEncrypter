@@ -11,9 +11,7 @@
 		<string>/bin/sh</string>
 		<string>/Library/Application Support/Custom/DiskEncrypter.sh</string>
 	</array>
-	<key>WatchPaths</key>
-	<array>
-		<string>/Volumes/</string>
-	</array>
+	<key>StartOnMount</key>
+	<true/>
 </dict>
 </plist>

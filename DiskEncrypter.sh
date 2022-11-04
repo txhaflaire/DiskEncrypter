@@ -39,9 +39,13 @@ notificationApp=$( readSetting notificationApp "/usr/local/bin/dialog" )
 ## swiftDialog Customization ##
 companyName=$( readSetting companyName "Jamf" )
 iconPath=$( readSetting iconPath "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/FileVaultIcon.icns" )
+batteryIconPath=$( readSetting batteryIconPath "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/AlertStopIcon.icns")
 
 ## General text section
 title=$( readSetting title "Unencrypted Removable Media Device detected" )
+
+subTitleBattery=$( readSetting subTitleBattery "The Mac is not connected to AC Power and therefore the removable media device can't be encrypted, plug in the AC adapter and try again")
+batteryExitMainButton=$( readSetting batteryExitMainButton "Quit" )
 
 subTitlePassword=$( readSetting subTitlePassword "Writing files to unencrypted removable media devices is not allowed, encrypt the disk in order to allow writing files. securely store the password and in case of loss the data will be unaccesible!" )
 mainButtonLabelPassword=$( readSetting mainButtonLabelPassword "Continue" )
@@ -90,29 +94,35 @@ readSettingsFile
 	## Check if the mounted External Disk is external, physical and continue
 	if [[ -z $ExternalDisks ]]; then
 		echo "no external disks mounted"
+		logger "DiskEncrypter: no external disks mounted"
 		exit 0
 	else
 		## Echo external disk mounted
 		echo "external disk mounted"
+		logger "DiskEncrypter: external disk mounted"
 
 		## Loop through Storage Volume Types
 		StorageType=$(diskutil list $ExternalDisks)
 
 		if [[ $StorageType =~ "Apple_APFS" ]]; then
 			echo "The external media volume type is APFS"
+			logger "DiskEncrypter: The external media volume type is APFS"
 			StorageType='APFS'
 			
 			## Check the DiskID of the APFS container and report the encryption state
 			DiskID=$(diskutil list $ExternalDisks | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')
 			echo "Disk ID is $DiskID"
+			logger "DiskEncrypter: Disk ID is $DiskID"
 			FileVaultStatus=$(diskutil apfs list $DiskID | grep "FileVault:" | awk '{print $2}')
 			
 			## If the APFS Container is not encrypted, run workflow
 			if [ $StorageType == "APFS" ] && [ $FileVaultStatus == "Yes" ]; then
 				echo "FileVault is enabled on $DiskID, exiting.."
+				logger "DiskEncrypter: FileVault is enabled on $DiskID, exiting.."
 				exit 0
 			else
 				echo "FileVault is disabled on $DiskID, running encryption workflow"
+				logger "DiskEncrypter: FileVault is disabled on $DiskID, running encryption workflow"
 					
 				# Mounting disk as read-only
 				diskutil unmountDisk "$DiskID"s1
@@ -122,6 +132,7 @@ readSettingsFile
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
 					
 					echo "swiftDialog not installed, downloading and installing"
+					logger "DiskEncrypter: swiftDialog not installed, downloading and installing"
 					
 					expectedDialogTeamID="PWA5E9TQ59"
 					LOCATION=$(/usr/bin/curl -s https://api.github.com/repos/bartreardon/swiftDialog/releases/latest | grep browser_download_url | grep .pkg | grep -v debug | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g')
@@ -133,15 +144,28 @@ readSettingsFile
 					# Install the package if Team ID validates
 					if [ "$expectedDialogTeamID" = "$teamID" ] || [ "$expectedDialogTeamID" = "" ]; then
 						echo "swiftDialog Team ID verification succeeded"
+						logger "DiskEncrypter: swiftDialog Team ID verification succeeded"
 						/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
 					else
 						echo "swiftDialog Team ID verification failed."
+						logger "DiskEncrypter: swiftDialog Team ID verification failed."
 						exit 1
 					fi
 					
 					# Cleaning up the swiftDialog.pkg
 					/bin/rm /tmp/swiftDialog.pkg
 					
+				fi
+
+				## Checking if the Mac is connected to AC Power or draining on the battery
+				if [[ $(pmset -g ps | head -1) =~ "AC Power" ]]; then
+					echo "Device is connected to AC Power, proceeding.."
+					logger "DiskEncrypter: "Device is connected to AC Power, proceeding.." "
+				else
+					echo "Device is connected to battery and not charging, exiting"
+					logger "DiskEncrypter: "Device is connected to battery and not charging, exiting""
+					dialog=$(/usr/bin/sudo -u "$loggedInUser" "$notificationApp" --title "$title" --message "$subTitleBattery" --button1text "$batteryExitMainButton" --icon "$batteryIconPath")
+					exit 1
 				fi
 				
 				## Generate notification and ask for password for encryption or mount volume as read-only
@@ -179,23 +203,27 @@ readSettingsFile
 					;;
 					2)
 					echo "$loggedInUser decided mounting $DiskID as read-only"
+					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
 					diskutil unmountDisk "$DiskID"s1
 					diskutil mount readonly "$DiskID"s1
 					exit 2
 					;;
 					3)
 					echo "$loggedInUser dediced to eject $DiskID"
-					diskutil unmountDisk "$DiskID"s1
+					logger "DiskEncrypter: $loggedInUser dediced to eject $DiskID"
+					diskutil unmountDisk "$DiskID"
 					exit 3
 				esac
 			 fi
 		elif [[ $StorageType =~ "Apple_HFS" ]]; then
 			echo "The external media type is $StorageType"
+			logger "DiskEncrypter: The external media type is $StorageType"
 			StorageType="HFS"
 			
 			# Check Encryption State
             DiskID="$ExternalDisks"
 			echo "Disk ID is $DiskID"
+			logger "DiskEncrypter: Disk ID is $DiskID"
 			FileVaultStatus=$(diskutil list $DiskID | grep "FileVault:" | awk '{print $2}')
 
             ## In case of HFS container, we need to convert it to APFS and have it encrypted
@@ -209,6 +237,7 @@ readSettingsFile
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
 					
 					echo "swiftDialog not installed, downloading and installing"
+					logger "DiskEncrypter: swiftDialog not installed, downloading and installing"
 					
 					expectedDialogTeamID="PWA5E9TQ59"
 					LOCATION=$(/usr/bin/curl -s https://api.github.com/repos/bartreardon/swiftDialog/releases/latest | grep browser_download_url | grep .pkg | grep -v debug | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g')
@@ -220,9 +249,11 @@ readSettingsFile
 					# Install the package if Team ID validates
 					if [ "$expectedDialogTeamID" = "$teamID" ] || [ "$expectedDialogTeamID" = "" ]; then
 						echo "swiftDialog Team ID verification succeeded"
+						logger "DiskEncrypter: swiftDialog Team ID verification succeeded"
 						/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
 					else
 						echo "swiftDialog Team ID verification failed."
+						logger "DiskEncrypter: swiftDialog Team ID verification failed."
 						exit 1
 					fi
 					
@@ -269,23 +300,27 @@ readSettingsFile
 					;;
 					2)
 					echo "$loggedInUser decided mounting $DiskID as read-only"
+					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
 					diskutil unmountDisk "$DiskID"
 					diskutil mount readonly "$DiskID"s2
 					exit 2
 					;;
 					3)
 					echo "$loggedInUser dediced to eject $DiskID"
+					logger "DiskEncrypter: $loggedInUser dediced to eject $DiskID"
 					diskutil unmountDisk "$DiskID"
 					exit 3
 				esac
             fi
 		elif [[ $StorageType =~ "Microsoft Basic Data" ]]; then
 			echo "The external media type is Microsoft Basic Data"
+			logger "DiskEncrypter: The external media type is Microsoft Basic Data"
 			StorageType="Microsoft Basic Data"
 			
 			# Check Encryption State
             DiskID="$ExternalDisks"
 			echo "Disk ID is $DiskID"
+			logger "DiskEncrypter: Disk ID is $DiskID"
 			volumeName=$(diskutil info "$DiskID"s2 | grep "Volume Name" | awk '{print $3}')
 
             ## In case of EXFAT volume, we need to erase it, reformat to APFS and encrypt it
@@ -299,6 +334,7 @@ readSettingsFile
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
 					
 					echo "swiftDialog not installed, downloading and installing"
+					logger "DiskEncrypter: swiftDialog not installed, downloading and installing"
 					
 					expectedDialogTeamID="PWA5E9TQ59"
 					LOCATION=$(/usr/bin/curl -s https://api.github.com/repos/bartreardon/swiftDialog/releases/latest | grep browser_download_url | grep .pkg | grep -v debug | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g')
@@ -310,9 +346,11 @@ readSettingsFile
 					# Install the package if Team ID validates
 					if [ "$expectedDialogTeamID" = "$teamID" ] || [ "$expectedDialogTeamID" = "" ]; then
 						echo "swiftDialog Team ID verification succeeded"
+						logger "DiskEncrypter: swiftDialog Team ID verification succeeded"
 						/usr/sbin/installer -pkg /tmp/swiftDialog.pkg -target /
 					else
 						echo "swiftDialog Team ID verification failed."
+						logger "DiskEncrypter: swiftDialog Team ID verification failed."
 						exit 1
 					fi
 					
@@ -356,12 +394,14 @@ readSettingsFile
 					;;
 					2)
 					echo "$loggedInUser decided mounting $DiskID as read-only"
+					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
 					diskutil unmountDisk "$DiskID"
 					diskutil mount readonly "$DiskID"s2
 					exit 2
 					;;
 					3)
 					echo "$loggedInUser dediced to eject $DiskID"
+					logger "DiskEncrypter: $loggedInUser dediced to eject $DiskID"
 					diskutil unmountDisk "$DiskID"
 					exit 3
 				esac
