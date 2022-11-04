@@ -79,5 +79,10 @@ On detection of a new volume being mounted in `Volumes` the `LaunchDaemon` trigg
 
 <img src="./Images/jamfpro_custom_apps_and_settings.png" alt="Jamf Pro Custom Application & Settings" width="500"/><br/>
 
+###  <a id="credits"></a>credits
+
+- First and foremost to bartreardon and community for developing swiftDialog
+- Secondly @mvandebent reviewing and providing me with some extra idea's to add
+
 #
 #### Please note that all resources contained within this repository are provided as-is and are not officially supported.
