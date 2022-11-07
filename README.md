@@ -6,7 +6,9 @@ This workflow could help any organisation by preventing loss of corporate data o
 
 Please read through and test this script intensively prior adding it to your production environment, as in some cases the end-user agree's to erase the external disk and losing it's contents stored on it.
 
-This workflow has been tested against macOS Monterey.
+This workflow has been tested against 
+- macOS Monterey 12.6 (21G115)
+- macOS Ventura 13.0 (22A380)
 
 ## Dependencies
 The workflows relies on swiftDialog, the preference is that it is already pre-installed but within the script we do provide checks to download and install it if it's not existing on the endpoint.
