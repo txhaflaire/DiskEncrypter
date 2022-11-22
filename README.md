@@ -15,6 +15,7 @@ The workflows relies on swiftDialog, the preference is that it is already pre-in
 
 - [SwiftDialog](https://github.com/bartreardon/swiftDialog/releases)
     -  swiftDialog includes options to enforce a password and hint complexity requirements based on a REGEX string which can be customised by using the `JSON` schema uploaded into Jamf Pro
+	- Tested with the latest release of swiftDialog v1.X and 2.0.1
 
 ## Workflow Steps
 
@@ -91,7 +92,7 @@ DiskEncrypter writes to the macOS Unified Log, use the following command to filt
 ###  <a id="credits"></a>credits
 
 - First and foremost to bartreardon and community for developing swiftDialog
-- Secondly @mvandebent reviewing and providing me with some extra idea's to add
+- Secondly @mvandbent reviewing and providing me with some extra idea's to add
 
 #
 #### Please note that all resources contained within this repository are provided as-is and are not officially supported.
