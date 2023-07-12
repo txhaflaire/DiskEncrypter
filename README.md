@@ -8,8 +8,8 @@ Please read through and test this script intensively prior adding it to your pro
 
 This workflow has been tested against
 - macOS Sonoma Beta 3 (23A5286g)
-- macOS Monterey 12.6 (21G115)
 - macOS Ventura 13.0 (22A380)
+- macOS Monterey 12.6 (21G115)
 
 ## Dependencies
 The workflows relies on swiftDialog, the preference is that it is already pre-installed but within the script we do provide checks to download and install it if it's not existing on the endpoint.
