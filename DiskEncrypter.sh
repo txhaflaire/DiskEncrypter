@@ -113,6 +113,8 @@ readSettingsFile
 			DiskID=$(diskutil list "$ExternalDisks" | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')
 			echo "Disk ID is $DiskID"
 			logger "DiskEncrypter: Disk ID is $DiskID"
+			VolumeID=$(df -h | grep "$DiskID" |awk '{print $1}' | sed 's|^/dev/||')
+			echo "$VolumeID"
 			FileVaultStatus=$(diskutil apfs list "$DiskID" | grep "FileVault:" | awk '{print $2}')
 			
 			## If the APFS Container is not encrypted, run workflow
@@ -125,8 +127,8 @@ readSettingsFile
 				logger "DiskEncrypter: FileVault is disabled on $DiskID, running encryption workflow"
 					
 				# Mounting disk as read-only
-				diskutil unmountDisk "$DiskID"s1
-				diskutil mount readonly "$DiskID"s1
+				diskutil unmountDisk "$VolumeID"
+				diskutil mount readonly "$VolumeID"
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
@@ -187,16 +189,16 @@ readSettingsFile
 							
 							/usr/bin/sudo -u "$loggedInUser" "$notificationApp" --title "$titleProgress" --message "$subTitleProgress" --icon "$iconPath"  --button1text "$mainButtonLabelProgress" --timer 12 &
 
-							diskutil unmountDisk "$DiskID"s1
-							diskutil mount "$DiskID"s1						
-							diskutil apfs encryptVolume "$DiskID"s1 -user "disk" -passphrase "$Password"
+							diskutil unmountDisk "$VolumeID"
+							diskutil mount "$VolumeID"						
+							diskutil apfs encryptVolume "$VolumeID" -user "disk" -passphrase "$Password"
 							
                             ## If the optional hint has been configured we are going to configure it here after encrypting the disk
 							if [ "$Passphrase" != "" ]; then
 								sleep 5
 								diskutil unmountDisk "$DiskID"
-								diskutil apfs unlockVolume "$DiskID"s1 -passphrase "$Password"
-								diskutil apfs setPassphraseHint "$DiskID"s1 -user "disk" -hint "$Passphrase"
+								diskutil apfs unlockVolume "$VolumeID" -passphrase "$Password"
+								diskutil apfs setPassphraseHint "$VolumeID" -user "disk" -hint "$Passphrase"
 							fi							
 							exit 0	
 					fi
@@ -204,8 +206,8 @@ readSettingsFile
 					2)
 					echo "$loggedInUser decided mounting $DiskID as read-only"
 					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
-					diskutil unmountDisk "$DiskID"s1
-					diskutil mount readonly "$DiskID"s1
+					diskutil unmountDisk "$DiskID"
+					diskutil mount readonly "$VolumeID"
 					exit 2
 					;;
 					3)
@@ -224,6 +226,8 @@ readSettingsFile
             DiskID="$ExternalDisks"
 			echo "Disk ID is $DiskID"
 			logger "DiskEncrypter: Disk ID is $DiskID"
+			VolumeID=$(df -h | grep "$DiskID" |awk '{print $1}' | sed 's|^/dev/||')
+			echo "$VolumeID"
 			FileVaultStatus=$(diskutil list "$DiskID" | grep "FileVault:" | awk '{print $2}')
 
             ## In case of HFS container, we need to convert it to APFS and have it encrypted
@@ -231,7 +235,7 @@ readSettingsFile
 
 				# Mounting disk as read-only
 				diskutil unmountDisk "$DiskID"
-				diskutil mount readonly "$DiskID"s2
+				diskutil mount readonly "$VolumeID"
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
@@ -281,9 +285,9 @@ readSettingsFile
 														
 							/usr/bin/sudo -u "$loggedInUser" "$notificationApp" --title "$titleProgress" --message "$subTitleProgress" --icon "$iconPath"  --button1text "$mainButtonLabelProgress" --timer 12 &
 
-							diskutil unmountDisk "$DiskID"s2
-							diskutil mount "$DiskID"s2
-							diskutil apfs convert "$DiskID"s2
+							diskutil unmountDisk "$VolumeID"
+							diskutil mount "$VolumeID"
+							diskutil apfs convert "$VolumeID"
 
 							DiskID=$(diskutil list "$ExternalDisks" | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')							
 							diskutil apfs encryptVolume "$DiskID"s1 -user "disk" -passphrase "$Password"
@@ -292,8 +296,8 @@ readSettingsFile
 							if [ "$Passphrase" != "" ]; then
 								sleep 5
 								diskutil unmountDisk "$DiskID"
-								diskutil apfs unlockVolume "$DiskID"s1 -passphrase "$Password"
-								diskutil apfs setPassphraseHint "$DiskID"s1 -user "disk" -hint "$Passphrase"
+								diskutil apfs unlockVolume "$VolumeID" -passphrase "$Password"
+								diskutil apfs setPassphraseHint "$VolumeID" -user "disk" -hint "$Passphrase"
 							fi	
 							exit 0
 					fi
@@ -302,7 +306,7 @@ readSettingsFile
 					echo "$loggedInUser decided mounting $DiskID as read-only"
 					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
 					diskutil unmountDisk "$DiskID"
-					diskutil mount readonly "$DiskID"s2
+					diskutil mount readonly "$VolumeID"
 					exit 2
 					;;
 					3)
@@ -322,14 +326,16 @@ readSettingsFile
             DiskID="$ExternalDisks"
 			echo "Disk ID is $DiskID"
 			logger "DiskEncrypter: Disk ID is $DiskID"
-			volumeName=$(diskutil info "$DiskID"s2 | grep "Volume Name" | awk '{print $3}')
+			VolumeID=$(df -h | grep "$DiskID" |awk '{print $1}' | sed 's|^/dev/||')
+			echo "$VolumeID"
+			volumeName=$(diskutil info "$VolumeID" | grep "Volume Name" | awk '{print $3}')
 
             ## In case of EXFAT volume, we need to erase it, reformat to APFS and encrypt it
 			if [[ $StorageType == "Microsoft Basic Data" ]]; then
 
 				# Mounting disk as read-only
 				diskutil unmountDisk "$DiskID"
-				diskutil mount readonly "$DiskID"s2
+				diskutil mount readonly "$VolumeID"
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
@@ -380,15 +386,16 @@ readSettingsFile
 							/usr/bin/sudo -u "$loggedInUser" "$notificationApp" --title "$titleProgress" --message "$subTitleProgress" --icon "$iconPath"  --button1text "$mainButtonLabelProgress" --timer 12 &							
 							diskutil eraseDisk APFS "$volumeName" "$DiskID" 
 
-							DiskID=$(diskutil list "$ExternalDisks" | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')							
-							diskutil apfs encryptVolume "$DiskID"s1 -user "disk" -passphrase "$Password"
+							DiskID=$(diskutil list "$ExternalDisks" | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')
+							VolumeID=$(df -h | grep "$DiskID" |awk '{print $1}' | sed 's|^/dev/||')									
+							diskutil apfs encryptVolume "$VolumeID" -user "disk" -passphrase "$Password"
 							
 							## If the optional hint has been configured we are going to configure it here after encrypting the disk
 							if [ "$Passphrase" != "" ]; then
 								sleep 5
 								diskutil unmountDisk "$DiskID"
-								diskutil apfs unlockVolume "$DiskID"s1 -passphrase "$Password"
-								diskutil apfs setPassphraseHint "$DiskID"s1 -user "disk" -hint "$Passphrase"
+								diskutil apfs unlockVolume "$VolumeID" -passphrase "$Password"
+								diskutil apfs setPassphraseHint "$VolumeID" -user "disk" -hint "$Passphrase"
 							fi
 							exit 0
 					fi
@@ -397,7 +404,7 @@ readSettingsFile
 					echo "$loggedInUser decided mounting $DiskID as read-only"
 					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
 					diskutil unmountDisk "$DiskID"
-					diskutil mount readonly "$DiskID"s2
+					diskutil mount readonly "$VolumeID"
 					exit 2
 					;;
 					3)
@@ -417,14 +424,16 @@ readSettingsFile
             DiskID="$ExternalDisks"
 			echo "Disk ID is $DiskID"
 			logger "DiskEncrypter: Disk ID is $DiskID"
-			volumeName=$(diskutil info "$DiskID"s2 | grep "Volume Name" | awk '{print $3}')
+			VolumeID=$(df -h | grep "$DiskID" |awk '{print $1}' | sed 's|^/dev/||')
+			echo "$VolumeID"
+			volumeName=$(diskutil info "$VolumeID" | grep "Volume Name" | awk '{print $3}')
 
             ## In case of EXFAT volume, we need to erase it, reformat to APFS and encrypt it
 			if [[ $StorageType == "FAT" ]]; then
 
 				# Mounting disk as read-only
 				diskutil unmountDisk "$DiskID"
-				diskutil mount readonly "$DiskID"s2
+				diskutil mount readonly "$VolumeID"
 
 				# Downloading and installing swiftDialog if not existing
 				if [[ "$downloadSwiftDialog" == "yes" ]] && [[ ! -f "$notificationApp" ]]; then
@@ -475,15 +484,16 @@ readSettingsFile
 							/usr/bin/sudo -u "$loggedInUser" "$notificationApp" --title "$titleProgress" --message "$subTitleProgress" --icon "$iconPath"  --button1text "$mainButtonLabelProgress" --timer 12 &							
 							diskutil eraseDisk APFS "$volumeName" "$DiskID" 
 
-							DiskID=$(diskutil list "$ExternalDisks" | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')							
-							diskutil apfs encryptVolume "$DiskID"s1 -user "disk" -passphrase "$Password"
+							DiskID=$(diskutil list "$ExternalDisks" | grep -o '\(Container disk[0-9s]*\)' | awk '{print $2}')
+							VolumeID=$(df -h | grep "$DiskID" |awk '{print $1}' | sed 's|^/dev/||')							
+							diskutil apfs encryptVolume "$VolumeID" -user "disk" -passphrase "$Password"
 							
 							## If the optional hint has been configured we are going to configure it here after encrypting the disk
 							if [ "$Passphrase" != "" ]; then
 								sleep 5
 								diskutil unmountDisk "$DiskID"
-								diskutil apfs unlockVolume "$DiskID"s1 -passphrase "$Password"
-								diskutil apfs setPassphraseHint "$DiskID"s1 -user "disk" -hint "$Passphrase"
+								diskutil apfs unlockVolume "$VolumeID" -passphrase "$Password"
+								diskutil apfs setPassphraseHint "$VolumeID" -user "disk" -hint "$Passphrase"
 							fi
 							exit 0
 					fi
@@ -492,7 +502,7 @@ readSettingsFile
 					echo "$loggedInUser decided mounting $DiskID as read-only"
 					logger "DiskEncrypter: $loggedInUser decided mounting $DiskID as read-only"
 					diskutil unmountDisk "$DiskID"
-					diskutil mount readonly "$DiskID"s2
+					diskutil mount readonly "$VolumeID"
 					exit 2
 					;;
 					3)
